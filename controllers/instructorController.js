@@ -80,6 +80,42 @@ const getInstructor =  asyncHandler(async (req, res) => {
 	res.status(200).json(req.instructor)
 })
 
+// update instructor
+const updateInstructor = asyncHandler(async (req, res) => {
+	const instructor = req.instructor
+	const { instructorFirstname, instructorLastname, instructorEmail, password, instructorBio } = req.body
+  
+	if (instructor) {
+	  instructor.instructorFirstname = instructorFirstname || instructor.instructorFirstname
+	  instructor.instructorLastname = instructorLastname || instructor.instructorLastname
+	  instructor.instructorEmail = instructorEmail || instructor.instructorEmail
+	  instructor.instructorBio = instructorBio || instructor.instructorBio
+  
+	  if (password) {
+		const salt = await bcrypt.genSalt(10)
+		const hashedPassword = await bcrypt.hash(password, salt)
+		instructor.password = hashedPassword
+	  }
+  
+	  const updatedInstructor = await instructor.save()
+  
+	  res.json({
+		_id: updatedInstructor._id,
+		instructorFirstname: updatedInstructor.instructorFirstname,
+		instructorLastname: updatedInstructor.instructorLastname,
+		instructorEmail: updatedInstructor.instructorEmail,
+		instructorBio: updatedInstructor.instructorBio,
+		token: generateToken(updatedInstructor._id),
+	  })
+	} else {
+	  res.status(404)
+	  throw new Error('Instructor not found')
+	}
+  })
+  
+ 
+  
+
 // generate jwt
 
 const generateToken = (instructorId) => {
@@ -89,8 +125,9 @@ const generateToken = (instructorId) => {
   }
 
 
-module.exports = {
+  module.exports = {
 	registerInstructor,
 	loginInstructor,
-	getInstructor
-}
+	getInstructor,
+	updateInstructor,
+  }

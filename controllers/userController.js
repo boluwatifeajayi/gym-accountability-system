@@ -90,6 +90,43 @@ const loginUser = asyncHandler(async (req, res) => {
 	}
   })
 
+
+// update user
+const updateUser = asyncHandler(async (req, res) => {
+	const { firstname, lastname, age, weight, height, gender, place, focus } = req.body;
+	const user = await User.findById(req.user._id);
+  
+	if (user) {
+	  user.firstname = firstname || user.firstname;
+	  user.lastname = lastname || user.lastname;
+	  user.age = age || user.age;
+	  user.weight = weight || user.weight;
+	  user.height = height || user.height;
+	  user.gender = gender || user.gender;
+	  user.place = place || user.place;
+	  user.focus = focus || user.focus;
+  
+	  const updatedUser = await user.save();
+	  res.json({
+		_id: updatedUser._id,
+		firstname: updatedUser.firstname,
+		lastname: updatedUser.lastname,
+		email: updatedUser.email,
+		age: updatedUser.age,
+		weight: updatedUser.weight,
+		height: updatedUser.height,
+		gender: updatedUser.gender,
+		focus: updatedUser.focus,
+		place: updatedUser.place,
+		token: generateToken(updatedUser._id),
+	  });
+	} else {
+	  res.status(404);
+	  throw new Error('User not found');
+	}
+  });
+  
+
 // get current user
 const getMe =  asyncHandler(async (req, res) => {
 	res.status(200).json(req.user)
@@ -109,5 +146,6 @@ const generateToken = (userId) => {
 module.exports = {
 	registerUser,
 	loginUser,
+	updateUser,
 	getMe
 }
