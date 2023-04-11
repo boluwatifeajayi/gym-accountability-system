@@ -2,6 +2,8 @@ import axios from 'axios'
 
 axios.defaults.withCredentials = true
 
+const API_URL = "http://localhost:4070/api/workouts/"
+
 // get all workouts
 const getAllWorkouts = async () => {
   const response = await axios.get('/api/workouts/all')
@@ -18,7 +20,7 @@ const createWorkout = async (workoutData, token) => {
       Cookie: `authToken=${token}`
     }
   }
-  const response = await axios.post('/api/workouts/create', workoutData, config)
+  const response = await axios.post(`${API_URL}create`, workoutData, config)
 
   return response.data
 }

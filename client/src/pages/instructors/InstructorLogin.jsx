@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {useNavigate, Link} from 'react-router-dom'
 import { toast } from 'react-toastify'
+import Header from '../../components/Header'
 import {loginInstructor, instructorreset} from '../../features/instructor/instructorAuthSlice'
 
 
@@ -28,7 +29,7 @@ const {
       toast.error(message)
     }
     if(isSuccess || instructor){
-      navigate('/instructor/documents')
+      navigate('/instructor/dashboard')
     }
 
     dispatch(instructorreset())
@@ -65,17 +66,19 @@ const {
 
   return (
     <>  
-      <div className='container regg'>
+
+    <Header/>
+      <div className='container reg'>
       <div className='rowi'>
        
         <div>
         <div className="reg-container">
       <div className="reg-wrapper">
-      <h3><b>Login To Your Account</b></h3>
+      <h3 className='text-2xl mb-1'><b>Welcome Back</b></h3>
+      <p className='mb-4'>Please Login to continue</p>
         
         <form className='form' onSubmit={onSubmit}>
         
-             <hr/>
              
              
 			  
@@ -113,13 +116,13 @@ const {
          
         </form>
 
-        <span>Already have an account? </span>
+        <span>Don't have an account? </span>
         <Link
-          to="/instructor/login"
+          to="/instructor/register"
           className="secondary"
           style={{ textDecoration: 'none' }}
         >
-          Login
+          Register
         </Link>
         <br/>
         

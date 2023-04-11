@@ -8,6 +8,7 @@ import Register from './pages/users/Register'
 import InstructorRegister from './pages/instructors/InstructorRegister'
 import InstructorLogin from './pages/instructors/InstructorLogin';
 import InstructorDashboard from './pages/instructors/InstructorDashboard';
+import CreateWorkout from './pages/instructors/CreateWorkout';
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <Route path='/instructor/register' element={<InstructorRegister/>}/>
         <Route path='/instructor/login' element={<InstructorLogin/>}/>
         <Route path='/instructor/dashboard' element={<InstructorDashboard/>}/>
+        <Route path='/instructor/create' element={<CreateWorkout/>}/>
        </Routes>
       </div>
     </Router>

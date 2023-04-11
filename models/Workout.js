@@ -86,34 +86,12 @@ const workoutSchema = mongoose.Schema({
 		  },
 	  ],
 
-	  workoutSchedule: [
-		{
-		  day: {
-			type: String,
-			required: true,
-		  },
-		  exercises: [
-			{
-			  name: {
-				type: String,
-				required: true,
-			  },
-			  reps: {
-				type: Number,
-				required: true,
-			  },
-			  image: {
-				type: String,
-				required: true
-			  },
-			  complete: {
-				type: Boolean,
-				default: false,
-			  },
-			},
-		  ],
-		},
-	  ],
+	  workoutSchedule: {
+		type: String,
+		required: true
+	  },
+
+	  
 	
 
 },

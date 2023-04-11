@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {useNavigate, Link} from 'react-router-dom'
 import { toast } from 'react-toastify'
+import Header from '../../components/Header'
 import {registerInstructor, instructorreset} from '../../features/instructor/instructorAuthSlice'
 
 
@@ -73,20 +74,21 @@ const {
 
   return (
     <>  
-      <div className='container regg'>
+    <Header/>
+      <div className='container reg'>
       <div className='rowi'>
        
         <div>
         <div className="reg-container">
       <div className="reg-wrapper">
-      <h3><b>Create Instructor Account</b></h3>
+      <h2 className='text-2xl mb-4'><b>Create Instructor Account</b></h2>
          
-       <hr/>
+      
        
 
         <form className='form' onSubmit={onSubmit}>
         
-             <hr/>
+            
              
              
 			  <div className='row'>
@@ -98,7 +100,7 @@ const {
                   name="instructorFirstname"
                   placeholder='first name'
                   onChange={onChange}
-                  className="form-input"
+                  className="form-control"
                   style={{paddingLeft: 15,}}
                   value={instructorFirstname}
                   required
@@ -115,7 +117,7 @@ const {
                   value={instructorLastname}
                   style={{paddingLeft: 15,}}
                   placeholder="Last name"
-                  className="form-input"
+                  className="form-control"
                   required
                 />
              </div>

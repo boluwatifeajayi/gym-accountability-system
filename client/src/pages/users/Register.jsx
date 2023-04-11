@@ -3,6 +3,7 @@ import {useSelector, useDispatch} from 'react-redux'
 import {useNavigate, Link} from 'react-router-dom'
 import { toast } from 'react-toastify'
 import {register, reset} from '../../features/userAuth/userAuthSlice'
+import Header from '../../components/Header'
 
 
 
@@ -78,16 +79,16 @@ function Register() {
 
   return (
     <>
-
+    <Header/>
       <div className='container reg'>
       <div className='rowi'>
         <div>
         <div className="reg-container">
       <div className="reg-wrapper">
-      <h2><b>Create An Account</b></h2>
-          <p className='mt-4'>Please Create An account to get started</p>
+      <h1><b>Create An Account</b></h1>
+          <p className='mt-4 mb-4'>Please Create An account to get started</p>
          
-          <hr/>
+         
        
 
         <form className='form' onSubmit={onSubmit}>

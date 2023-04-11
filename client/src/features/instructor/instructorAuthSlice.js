@@ -52,7 +52,7 @@ export const updateInstructor = createAsyncThunk('instructorauth/updateInstructo
 })
 
 // logout
-export const logout =  createAsyncThunk('instructorauth/logout', async () => {
+export const logoutInstructor =  createAsyncThunk('instructorauth/logout', async () => {
 	await instructorAuthService.logout()
 })
 
@@ -120,7 +120,7 @@ export const instructorAuthSlice = createSlice({
 				})
 
 			// logout
-			.addCase(logout.fulfilled, (state) => {
+			.addCase(logoutInstructor.fulfilled, (state) => {
 				state.instructor = null
 			})
 	}
