@@ -6,7 +6,7 @@ const API_URL = "http://localhost:4070/api/workouts/"
 
 // get all workouts
 const getAllWorkouts = async () => {
-  const response = await axios.get('/api/workouts/all')
+  const response = await axios.get(`${API_URL}all`)
   return response.data
 }
 
@@ -39,14 +39,14 @@ const getInstructorWorkouts = async (token) => {
     }
   }
 
-  const response = await axios.get('/api/workouts/instructor', config)
+  const response = await axios.get(`${API_URL}instructor`, config)
 
   return response.data
 }
 
 // get workout by id
 const getWorkoutById = async (workoutId) => {
-  const response = await axios.get(`/api/workouts/workout/${workoutId}`)
+  const response = await axios.get(`${API_URL}workout/${workoutId}`)
   return response.data
 }
 

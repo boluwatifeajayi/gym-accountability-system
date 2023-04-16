@@ -9,6 +9,9 @@ import InstructorRegister from './pages/instructors/InstructorRegister'
 import InstructorLogin from './pages/instructors/InstructorLogin';
 import InstructorDashboard from './pages/instructors/InstructorDashboard';
 import CreateWorkout from './pages/instructors/CreateWorkout';
+import Workout from './pages/users/Workout';
+import InstructorWorkout from './pages/instructors/InstructorWorkout';
+import AllWorkouts from './pages/users/AllWorkouts';
 
 
 function App() {
@@ -24,6 +27,9 @@ function App() {
         <Route path='/instructor/login' element={<InstructorLogin/>}/>
         <Route path='/instructor/dashboard' element={<InstructorDashboard/>}/>
         <Route path='/instructor/create' element={<CreateWorkout/>}/>
+        <Route path='/instructor/workout/:id' element={<InstructorWorkout/>}/>
+        <Route path='/workouts' element={<AllWorkouts/>}/>
+        <Route path='/workout/:id' element={<Workout/>}/>
        </Routes>
       </div>
     </Router>

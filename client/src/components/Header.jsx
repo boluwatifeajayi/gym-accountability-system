@@ -17,18 +17,18 @@ function Header() {
     return () => setIsMounted(false);
   }, []);
 
-  useEffect(() => {
-    if (!isMounted) return;
-    return () => {
-      if (user) {
-        dispatch(logout());
-        dispatch(reset());
-      } else if (instructor) {
-        dispatch(logoutInstructor());
-        dispatch(instructorreset());
-      }
-    };
-  }, [dispatch, instructor, user, isMounted]);
+  // useEffect(() => {
+  //   if (!isMounted) return;
+  //   return () => {
+  //     if (user) {
+  //       dispatch(logout());
+  //       dispatch(reset());
+  //     } else if (instructor) {
+  //       dispatch(logoutInstructor());
+  //       dispatch(instructorreset());
+  //     }
+  //   };
+  // }, [dispatch, instructor, user, isMounted]);
 
   const onLogout = () => {
     if (user) {
@@ -46,31 +46,31 @@ function Header() {
 
   return (
     <div>
-  <header className="sticky top-0 z-50 bg-gradient-to-r from-blue-500 to-purple-500">
+  <header className="sticky top-0 z-50 bg-white shadow-md">
     <div className="container mx-auto flex justify-between items-center py-0 px-6">
       <Link to="/">
-        <h5 className="text-white text-xl font-bold tracking-wide">
+        <h5 className="text-blue-500 text-xl font-bold tracking-wide">
          Accountability
         </h5>
       </Link>
 
       <nav className="hidden md:block">
-        <ul className="text-white font-medium">
+        <ul className="text-black font-medium">
           {instructor ? (
             ""
           ) : (
             <span>
               <li className="inline-block mx-4">
-                <Link to="/instructor/register">Vendors</Link>
+                <Link to="/workouts" className='text-gray-900'>Workouts</Link>
               </li>
               <li className="inline-block mx-4">
-                <Link to="/internships/categories">How It Works</Link>
+                <Link to="/internships/categories" className='text-gray-900'>How It Works</Link>
               </li>
               <li className="inline-block mx-4">
-                <Link to="/internships/locations">About</Link>
+                <Link to="/internships/locations" className='text-gray-900'>Categories</Link>
               </li>
               <li className="inline-block mx-4">
-                <Link to="/companies/all">Contact</Link>
+                <Link to="/companies/all" className='text-gray-900'>Contact</Link>
               </li>
             </span>
           )}
@@ -79,16 +79,16 @@ function Header() {
 
       <div>
         {user || instructor ? (
-          <div className="flex items-center text-white">
+          <div className="flex items-center text-black">
             <Link
               className="mr-8 text-lg font-medium"
-              to={instructor ? "/instructor/documents" : "/user/documents"}
+              to={instructor ? "/instructor/dashboard" : "/user/dashboard"}
             >
-              <i className="fas fa-user mr-2"></i>
-              <span>Dashboard</span>
+              <i className="fas fa-user mr-2 text-blue-500"></i>
+              <span className='text-blue-500'>Dashboard</span>
             </Link>
             <button
-              className="bg-transparent border border-white rounded-full px-6 py-2 text-white font-medium"
+              className="bg-transparent border border-white rounded-full px-6 py-2 text-blue-500 font-medium"
               onClick={onLogout}
             >
               Logout
@@ -98,13 +98,13 @@ function Header() {
           <>
             <Link
               to="/user/login"
-              className="bg-white px-6 py-2 rounded-md text-blue-500 font-medium mr-4 hover:bg-blue-500 hover:text-white transition duration-300 ease-in-out"
+              className="bg-white px-6 py-2 rounded-md text-blue-500 font-medium mr-4  transition duration-300 ease-in-out"
             >
               Login
             </Link>
             <Link
               to="/user/register"
-              className="bg-blue-500 px-6 py-2 rounded-md text-white font-medium hover:bg-white hover:text-blue-500 transition duration-300 ease-in-out"
+              className="bg-blue-500 px-6 py-2 rounded-md text-white font-medium   transition duration-300 ease-in-out"
             >
               Register
             </Link>

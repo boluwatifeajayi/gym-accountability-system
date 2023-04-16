@@ -264,13 +264,12 @@ export const commentOnWorkout = createAsyncThunk(
   name: 'workout',
   initialState,
   reducers: {
-  clearWorkoutMessage: (state) => {
-  state.workoutMessage = ''
-  state.isError = false
-  state.isSuccess = false
+    reset: (state) => initialState,
   },
-  },
+  
+  
   extraReducers: (builder) => {
+    
   // Create workout
   builder
   .addCase(createWorkout.pending, (state) => {
@@ -509,5 +508,5 @@ action.payload || 'Failed to get instructors commented on workout'
   },
 })
 
-export const { reset } = workoutSlice.actions
+export const {reset} = workoutSlice.actions
 export default workoutSlice.reducer

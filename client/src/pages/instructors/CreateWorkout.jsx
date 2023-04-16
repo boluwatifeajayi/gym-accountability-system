@@ -8,6 +8,7 @@ import 'react-quill/dist/quill.snow.css';
 import 'quill/dist/quill.core.css';
 import 'quill/dist/quill.snow.css';
 import 'quill/dist/quill.bubble.css';
+import Header from "../../components/Header";
 
 
 
@@ -58,21 +59,23 @@ const CreateWorkout = () => {
 	  
 		dispatch(createWorkout(workoutData));
 	  
-		// navigate('/instructor/dashboard');
+		navigate('/instructor/dashboard');
 	  };
 	  
 
     return (
-
-        <div className="container2">
-    <Link to="/employer/workouts">
+	<div>
+		<Header/>
+		<div className="container2">
+   
+            <h2 class="text-2xl font-bold">Create A New Workout</h2>
+			<Link to="/instructor/dashboard">
       <button className='btn btn-block  mt-4 mb-4 w-50' style={{backgroundColor: '#d9dce2'}}> <i className='fa fa-arrow-left'></i>{" "}Back</button>
       </Link>
-            <h2 class="text-center">Create A New Workout</h2>
 		<hr/>
             <form onSubmit={onSubmit}>
             <div class="row mt-4">
-            <div class="col-md-4">
+            <div class="col-md-6">
 				<div className="form-group create-form">
 				<input
 					type='text'
@@ -122,9 +125,8 @@ const CreateWorkout = () => {
 				</div>
 				
 				</div>
-		    </div>
-			<div class="col-md-4">
-			<label>Image Url</label>
+				<div>
+			
 			<input
 					type='url'
 					placeholder='Image Url'
@@ -136,73 +138,61 @@ const CreateWorkout = () => {
             	/>
 
 				<div className="form-group">
-				<label>Equipments</label>
-				<ReactQuill
+				
+				<input
 					type='text'
-					placeholder='equipments'
-					name="equipments"
+					placeholder='Equipments'
+					name='equipments'
 					value={equipments}
-					onChange={(value) => { onChange("equipments", value) }}
+					onChange={(e)=>{onChange(e.target.name,e.target.value)}}
+					className="form-input mb-4"
 					required
-					modules={{
-						toolbar: [
-							[{ 'header': '1' }, { 'header': '2' }],
-							['bold', 'italic', 'underline', 'blockquote'],
-							[{ 'list': 'ordered' }, { 'list': 'bullet' },],
-							['link'],
-							['clean']
-						]
-						
-					}}
-					
-				/>
+            	/>
 
 				</div>
 		    </div>
-			<div class="col-md-4">
+		    </div>
+			
+			<div class="col-md-6">
 
-			<label>Workout</label>
+			<label>Workout Details</label>
+
 			<ReactQuill
-					value={workoutSchedule}
-					onChange={(value) => { onChange("workoutSchedule", value) }}
-					modules={{
-						toolbar: [
-							[{ 'header': '1' }, { 'header': '2' }],
-							['bold', 'italic', 'underline', 'blockquote'],
-							[{ 'list': 'ordered' }, { 'list': 'bullet' },],
-							['link'],
-							['clean']
-						],
-						
-					}}
-					rows={12}
-					placeholder='Workout'
-					className="mb-4"
-					required
-					name='workoutSchedule'
-				/>
-			 
-				
-			
-			 
-			
+    value={workoutSchedule} // Initial value of the editor
+    onChange={(value) => { onChange("workoutSchedule", value) }} // Callback function to handle changes in the editor's content
+    modules={{
+        toolbar: [
+            [{ 'header': '1' }, { 'header': '2' }], // Header styles
+            ['bold', 'italic', 'underline', 'blockquote'], // Text styles
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }], // List styles
+            ['link'], // Link insertion
+            ['clean'] // Clean formatting
+        ],
+        // You can add additional modules here to extend the functionality of the editor
+    }}
+    rows={16} // Number of visible rows in the editor
+    placeholder="Monday: 30 min. jog, 20 min. strength training..."// Placeholder text displayed when the editor is empty
+    className="mb-4" // CSS class for styling
+    required // Indicates that the editor input is required
+    name='workoutSchedule' // Name attribute for the editor input
+/>
 
             </div>
             </div>
-            
-            
       <div>
         <center>
         <input
           type='submit'
           value='Create'
-          className='btn btn-primary btn-block mb-4 w-50'
+          className='normal-btn mb-4 w-50'
         />
         </center>
         
       </div>
     </form>
         </div>
+	</div>
+    
 
         
     )
