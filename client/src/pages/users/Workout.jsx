@@ -3,10 +3,12 @@ import { useNavigate, useParams, Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import {getWorkoutById, reset} from '../../features/workout/workoutSlice'
 import {applyWorkout} from '../../features/workout/workoutSlice'
+import { commentToWorkout } from '../../features/workout/workoutSlice'
 import { Button, Modal, Form } from 'react-bootstrap';
 import { Helmet } from 'react-helmet';
 import moment from 'moment';
 import Header from '../../components/Header'
+
 
 
 function Workout() {
@@ -22,14 +24,14 @@ function Workout() {
   const {user} = useSelector((state) => state.userauth) 
 
   const [formData, setFormData] = useState({
-    coverLetter: '',
+    comments: '',
   })
 
-  const {coverLetter} = formData
+  const {comments} = formData
 
   const {singleWorkout, isLoading, isError, isSuccess, workoutMessage} = useSelector((state) => state.workout)
 
-  const { workoutName, category, description, duration, difficulty, tags, imageLink, equipments, workoutSchedule, createdAt } = singleWorkout
+  const { workoutName, category, description, duration, difficulty, tags, imageLink, noOfDays, equipments, workoutSchedule, userComments, createdAt } = singleWorkout
 
 
   
@@ -52,33 +54,40 @@ function Workout() {
   }
 
   const onSubmit = (e) => {
-      e.preventDefault();
-
-      const applyData = {
-        coverLetter
-    }
-    dispatch(applyWorkout({workoutId: id, applyData})) 
-    setShowModal(false);
-    setShowConfirmationModal(true);
-    }
-
-    useEffect(() => {
-      console.log(user);
-      dispatch(getWorkoutById(id));
-    
-      return () => {
-        dispatch(reset());
-      };
-    }, [dispatch, getWorkoutById, id, user]);
-
-    useEffect(() => {
-      if (isError) {
-        console.log(workoutMessage);
-      }
-    }, [isError, workoutMessage]);
-
-    
+	e.preventDefault();
   
+	const commentData = {
+	  comments: 'yeahh',
+	};
+  
+	dispatch(commentToWorkout({ workoutId: id, commentData }))
+	  .then(() => {
+		setShowModal(false);
+		setShowConfirmationModal(true);
+	  })
+	  .catch((error) => {
+		alert('You have already joined this workout');
+		console.log(error);
+	  });
+  };
+  
+  // ...
+  
+  useEffect(() => {
+	console.log(user);
+	dispatch(getWorkoutById(id));
+  
+	return () => {
+	  dispatch(reset());
+	};
+  }, [dispatch, getWorkoutById, id, user]);
+  
+  useEffect(() => {
+	if (isError) {
+	  alert('You have already joined this workout');
+	  console.log(workoutMessage);
+	}
+  }, [isError, workoutMessage]);
 
 
   const timeDiff = moment(createdAt).fromNow();
@@ -106,22 +115,24 @@ function Workout() {
 		<button className='btn mt-4 mb-4 back-btn' style={{backgroundColor: '#d9dce2'}}> <i className='fa fa-arrow-left'></i>{" "}Back To Workouts</button>
 		</Link>
 			
-	 <div className='row gx-5 mx-1'>
-		  <div className='col-md-12 border-b workout-d mb-4 p-4 inside'>
-		  <div className='inside'>
-		  <h2 className='mb-4 text-3xl font-semibold'>{workoutName}</h2>
+	 <div className='row gx-5 mx-1 bg-white p-4 rounded shadow-md mt-4'>
+		  <div className='col-md-12 workout-d mb-4 p-4'>
+		  <div className=''>
+		  <img src={imageLink} alt="picture" className="rounded h-80" />
+
+		  <h2 className='mb-4 text-3xl font-semibold mt-6'>{workoutName}</h2>
 		
 			  <p className='mb-3 mt-3 font-semi
 			  '>{category}</p>
 			  
 			 
   
-			  <p className='bigger mt-2 mb-2'>{" "} {tags}</p>
+			 
   
 			  <div>
 	<div class="row">
 	  <div class="col-12 col-md-4 mb-3 mb-md-0">
-		<p class="bigger"><p> {duration}</p></p>
+		<p class="bigger"><p> {noOfDays} days</p></p>
 	  </div>
 	  <div class="col-12 col-md-4 mb-3 mb-md-0">
 		<p class="bigger"><p> {difficulty}</p></p>
@@ -158,22 +169,24 @@ function Workout() {
   
 		  <Modal show={showModal} onHide={handleCloseModal} dialogClassName="custom-modal" className='themod'>
 	<Modal.Header closeButton>
-	  <Modal.Title>Internship Application To {workoutName}</Modal.Title>
+	  <h3 className='text-2xl mb-4'>{workoutName}</h3>
+	  
 	</Modal.Header>
 	<Modal.Body>
+	<p className='mb-4'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dicta expedita alias! Tempore dolorem magni laborum corporis ut qui molestias culpa nemo voluptatum dolorum veritatis eius autem reprehenderit, in enim!</p>
 	  <Form onSubmit={onSubmit}>
 		<Form.Group controlId="formTextArea">
-		  <b className='pinkish mb-4'>Write A Cover Letter</b>
-		  <textarea
+		 
+		  {/* <textarea
 			type='text'
 			placeholder='A convincing statement to get you hired by the company'
-			name='coverLetter'
-			value={coverLetter}
+			name='comments'
+			value={comments}
 			onChange={onChange}
 			className="form-control mb-4 mt-4"
 			rows={10}
 			required
-		  />
+		  /> */}
 		</Form.Group>
 		{user ? (
 		  <Button
@@ -182,7 +195,7 @@ function Workout() {
 			aria-disabled={false}
 			variant='danger'
 		  >
-			Submit
+			Join Now
 		  </Button>
 		) : (
 		  <center>
@@ -194,9 +207,7 @@ function Workout() {
 	  </Form>
 	</Modal.Body>
 	<Modal.Footer>
-	  <Button variant="secondary" onClick={handleCloseModal}>
-		Cancel
-	  </Button>
+	 
 	</Modal.Footer>
   </Modal>
   
@@ -204,16 +215,15 @@ function Workout() {
 		  <Modal.Header closeButton>
 			<Modal.Title>Application to {workoutName} successful</Modal.Title>
 		  </Modal.Header>
-		  <Modal.Body>Your application has been sent, track the progress of your application in your dashboard, click the button to go there dash
+		  <Modal.Body>You can track the workout and other users in your dashboard
 		  <Link to='/user/dashboard' >
-		  <Button
-			type='submit'
-			className=' mt-4 w-100'
-			aria-disabled={false}
-			variant='danger'
-		  >
-			Go To Dashboard
-		  </Button>
+		  <button
+  type="submit"
+  className="mt-4 w-full bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+>
+  Go To Dashboard
+</button>
+
 		  </Link>
 		  
 		  
@@ -231,7 +241,49 @@ function Workout() {
 	   
   
 		</div>
+		<div className="bg-white p-4 rounded shadow-md mt-4">
+      <h3 className="text-xl font-bold mb-4">Users Following this workout</h3>
+      <hr />
+      {userComments?.length === 0 ? (
+        <p className="text-gray-500">No users joined yet. Be the first to join!</p>
+      ) : (
+        userComments?.map((comment) => (
+          <div key={comment._id}>
+            <div className="mt-3 mb-3">
+              <p>
+                <span className="font-medium">Name: </span>
+                {comment.firstname}
+              </p>
+              <p>
+                <span className="font-medium">Email: </span>
+                {comment.email}
+              </p>
+              <p>
+                <span className="font-medium">Joined: </span>
+                {comment.comments}
+              </p>
+              <p>
+                <span className="font-medium">Progress: </span>
+                {comment.progress}%
+              </p>
+              <p>
+                <span className="font-medium">Joined: </span>
+                {moment(comment.appliedAt).fromNow()}
+              </p>
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded mt-3"
+                onClick={() => (window.location.href = `mailto:${comment.email}`)}
+              >
+                Message
+              </button>
+            </div>
+            <hr />
+          </div>
+        ))
+      )}
+    </div>
 	</div>
+	
 	</div>
 	
   )

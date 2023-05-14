@@ -26,7 +26,7 @@ function Login() {
       toast.error(message)
     }
     if(isSuccess || user){
-      navigate('/user/stations')
+      navigate('/workouts')
     }
 
     dispatch(reset())

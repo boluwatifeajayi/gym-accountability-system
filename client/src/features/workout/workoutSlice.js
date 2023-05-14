@@ -159,24 +159,27 @@ export const getInstructorAppliedWorkouts = createAsyncThunk(
   )
   
   // Comment on workout
-export const commentOnWorkout = createAsyncThunk(
-	'workouts/commentOnWorkout',
-	async ({ workoutId, commentData }, thunkAPI) => {
-	  try {
-		const token = thunkAPI.getState().instructorauth.instructor.token
-		const response = await commentToWorkout(workoutId, commentData, token)
-		return response
-	  } catch (error) {
-		const workoutMessage =
-		  (error.response &&
-			error.response.data &&
-			error.response.data.workoutMessage) ||
-		  error.workoutMessage ||
-		  error.toString()
-		return thunkAPI.rejectWithValue(workoutMessage)
-	  }
-	}
-  )
+// Comment on workout
+export const commentToWorkout = createAsyncThunk(
+  'workouts/commentToWorkout',
+  async ({ workoutId, commentData }, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().userauth.user.token
+      const response = await workoutService.commentToWorkout(workoutId, commentData, token) // Corrected function call
+      console.log(token)
+      return response
+    } catch (error) {
+      const workoutMessage =
+        (error.response &&
+          error.response.data &&
+          error.response.data.workoutMessage) ||
+        error.workoutMessage ||
+        error.toString()
+      return thunkAPI.rejectWithValue(workoutMessage)
+    }
+  }
+)
+
   
   // Delete workout
   export const deleteWorkout = createAsyncThunk(
@@ -198,25 +201,25 @@ export const commentOnWorkout = createAsyncThunk(
 	}
   )
   
-  // Update workout
+
   export const updateWorkout = createAsyncThunk(
-	'workouts/updateWorkout',
-	async ({ id, workoutData }, thunkAPI) => {
-	  try {
-		const token = thunkAPI.getState().instructorauth.instructor.token
-		const response = await updateWorkout(id, workoutData, token)
-		return response
-	  } catch (error) {
-		const workoutMessage =
-		  (error.response &&
-			error.response.data &&
-			error.response.data.workoutMessage) ||
-		  error.workoutMessage ||
-		  error.toString()
-		return thunkAPI.rejectWithValue(workoutMessage)
-	  }
-	}
+    'workouts/updateWorkout',
+    async ({ workoutData, workoutId }, thunkAPI) => {
+      try {
+        const token = thunkAPI.getState().instructorauth.instructor.token
+        return await workoutService.updateWorkout(workoutData, workoutId, token)
+      } catch (error) {
+        const docmessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.docmessage) ||
+          error.docmessage ||
+          error.toString()
+        return thunkAPI.rejectWithValue(docmessage)
+      }
+    }
   )
+  
   
   // Get instructors applied to workout
   export const getWorkoutInstructors = createAsyncThunk(
@@ -256,6 +259,24 @@ export const commentOnWorkout = createAsyncThunk(
 	}
   )
   
+// Get workouts commented by user
+export const getCommentedWorkouts = createAsyncThunk(
+  'workouts/getCommentedWorkouts',
+  async (_, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().userauth.user.token;
+      return await workoutService.getUserCommentedWorkouts(token);
+    } catch (error) {
+      const workoutMessage =
+        (error.response &&
+          error.response.data &&
+          error.response.data.workoutMessage) ||
+        error.workoutMessage ||
+        error.toString();
+      return thunkAPI.rejectWithValue(workoutMessage);
+    }
+  }
+);
 
 
 
@@ -267,8 +288,7 @@ export const commentOnWorkout = createAsyncThunk(
     reset: (state) => initialState,
   },
   
-  
-  extraReducers: (builder) => {
+extraReducers: (builder) => {
     
   // Create workout
   builder
@@ -380,7 +400,25 @@ builder
 	state.workoutMessage =
 	action.payload || 'Failed to get workouts by category'
 	})
-	
+	// Get commented workouts
+builder
+.addCase(getCommentedWorkouts.pending, (state) => {
+  state.isLoading = true;
+})
+.addCase(getCommentedWorkouts.fulfilled, (state, action) => {
+  state.isLoading = false;
+  state.isError = false;
+  state.isSuccess = true;
+  state.workouts = action.payload;
+})
+.addCase(getCommentedWorkouts.rejected, (state, action) => {
+  state.isLoading = false;
+  state.isError = true;
+  state.isSuccess = false;
+  state.workoutMessage =
+    action.payload || 'Failed to get commented workouts';
+});
+
 	// Get workouts applied by instructor
 	builder
 	.addCase(getInstructorAppliedWorkouts.pending, (state) => {
@@ -400,27 +438,20 @@ builder
 	action.payload || 'Failed to get workouts applied by instructor'
 	})
 
-	// Comment on workout
-builder
-.addCase(commentOnWorkout.pending, (state) => {
-state.isLoading = true
-})
-.addCase(commentOnWorkout.fulfilled, (state, action) => {
-state.isLoading = false
-state.isError = false
-state.isSuccess = true
-const index = state.workouts.findIndex(
-(workout) => workout._id === action.payload._id
-)
-state.workouts[index] = action.payload
-})
-.addCase(commentOnWorkout.rejected, (state, action) => {
-state.isLoading = false
-state.isError = true
-state.isSuccess = false
-state.workoutMessage = action.payload || 'Failed to comment on workout'
-})
 
+ .addCase(commentToWorkout.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(commentToWorkout.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.singleWorkout = action.payload
+      })
+      .addCase(commentToWorkout.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.workoutMessage = action.payload
+      })
 // Delete workout
 builder
 .addCase(deleteWorkout.pending, (state) => {
@@ -450,10 +481,7 @@ state.isLoading = true
 state.isLoading = false
 state.isError = false
 state.isSuccess = true
-const index = state.workouts.findIndex(
-(workout) => workout._id === action.payload._id
-)
-state.workouts[index] = action.payload
+
 })
 .addCase(updateWorkout.rejected, (state, action) => {
 state.isLoading = false

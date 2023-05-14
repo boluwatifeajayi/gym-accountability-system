@@ -18,6 +18,10 @@ const workoutSchema = mongoose.Schema({
 		type: String,
 		required: true
 	},
+	noOfDays: {
+		type: Number,
+		default: 30
+	},
 	difficulty: {
 		type: String,
 		required: true
@@ -76,9 +80,33 @@ const workoutSchema = mongoose.Schema({
 			userId: {
 			  type: mongoose.Schema.Types.ObjectId,
 			},
+			firstname: {
+				type: String
+			},
+			lastname: {
+				type: String
+			},
+			email: {
+				type: String
+			},
+			age: {
+				type: String
+			},
+			weight: {
+				type: String
+			},
+			joined: {
+				type: Boolean,
+			},
+			progress: {
+				type: Number,
+				get: function () {
+				  const daysElapsed = (new Date() - this.appliedAt) / (1000 * 60 * 60 * 24);
+				  return Math.min((daysElapsed / this.workout.noOfDays) * 100, 100);
+				},
+			  },
 			comments: {
 			  type: String,
-			  default: '...'	
 			},
 			appliedAt: {
 			  type: Date,

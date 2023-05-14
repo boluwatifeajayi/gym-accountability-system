@@ -94,7 +94,7 @@ const commentToWorkout = async (workoutId, commentData, token) => {
     }
   }
 
-  const response = await axios.post(`/api/workouts/${workoutId}/comment`, commentData, config)
+  const response = await axios.post(`${API_URL}${workoutId}/comment`, commentData, config)
 
   return response.data
 }
@@ -109,13 +109,13 @@ const deleteWorkout = async (workoutId, token) => {
     }
   }
 
-  const response = await axios.delete(`/api/workouts/delete/${workoutId}`, config)
+  const response = await axios.delete(`${API_URL}delete/${workoutId}`, config)
 
   return response.data
 }
 
 // update workout
-const updateWorkout = async (id, workoutData, token) => {
+const updateWorkout = async (workoutData, workoutId, token) => {
   axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   const config = {
     headers: {
@@ -125,7 +125,7 @@ const updateWorkout = async (id, workoutData, token) => {
     }
   }
 
-  const response = await axios.put(`/api/workouts/update/${id}`, workoutData, config)
+  const response = await axios.put(`${API_URL}update/${workoutId}`, workoutData, config)
 
   return response.data
 }
@@ -142,6 +142,19 @@ const getCommentUsers = async (workoutId) => {
 	return response.data;
 }
 
+const getUserCommentedWorkouts = async (token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await axios.get(`${API_URL}commented`, config);
+
+  return response.data;
+};
+
+
 
 const workoutService = {
 	getAllWorkouts,
@@ -156,7 +169,8 @@ const workoutService = {
 	deleteWorkout,
 	updateWorkout,
 	getWorkoutUsers,
-	getCommentUsers
+	getCommentUsers,
+  getUserCommentedWorkouts,
 }
 
 export default workoutService

@@ -30,20 +30,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  place: {
-    type: String,
-    required: true
-  },
-  focus: [{
-    name: {
-      type: String,
-      required: true
-    },
-    level: {
-      type: String,
-      required: true
-    }
-  }],
+  // place: {
+  //   type: String,
+  //   required: true
+  // },
   password: {
     type: String,
     required: true,

@@ -12,6 +12,8 @@ import CreateWorkout from './pages/instructors/CreateWorkout';
 import Workout from './pages/users/Workout';
 import InstructorWorkout from './pages/instructors/InstructorWorkout';
 import AllWorkouts from './pages/users/AllWorkouts';
+import UpdateWorkout from './pages/instructors/UpdateWorkout';
+import UserDashboard from './pages/users/UserDashboard';
 
 
 function App() {
@@ -30,6 +32,9 @@ function App() {
         <Route path='/instructor/workout/:id' element={<InstructorWorkout/>}/>
         <Route path='/workouts' element={<AllWorkouts/>}/>
         <Route path='/workout/:id' element={<Workout/>}/>
+        <Route path='/workout/update/:id' element={<UpdateWorkout/>}/>
+        <Route path='/user/dashboard' element={<UserDashboard/>}/>
+        
        </Routes>
       </div>
     </Router>

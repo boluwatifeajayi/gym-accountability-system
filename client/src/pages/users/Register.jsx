@@ -35,7 +35,7 @@ function Register() {
       toast.error(message)
     }
     if(isSuccess || user){
-      navigate('/user/stations')
+      navigate('/workouts')
     }
 
     dispatch(reset())
@@ -54,18 +54,17 @@ function Register() {
     
     
       const userData = {
-		firstname,
-		lastname,
-		email,
-		age,
-		weight,
-		height,
-		gender,
-		place,
-		focus,
-		password,
+        firstname,
+        lastname,
+        email,
+        age,
+        weight,
+        height,
+        gender,
+        place,
+        focus,
+        password,
       }
-
       dispatch(register(userData))
     }
 
@@ -80,7 +79,7 @@ function Register() {
   return (
     <>
     <Header/>
-      <div className='container reg'>
+      <div className='container reg  bg-white p-4 rounded shadow-md mt-4'>
       <div className='rowi'>
         <div>
         <div className="reg-container">
@@ -179,7 +178,7 @@ function Register() {
            
           <input
               type='text'
-              className='form-control'
+              className='form-input'
               id='matricNumber'
               name='weight'
               value={weight}
@@ -192,7 +191,7 @@ function Register() {
           <div className="form-group">
           <input
               type='text'
-              className='form-control'
+              className='form-input'
               id='program'
               name='height'
               value={height}

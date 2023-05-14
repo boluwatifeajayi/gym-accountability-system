@@ -17,6 +17,7 @@ const CreateWorkout = () => {
 	const [formData, setFormData] = useState({
 		workoutName: '',
 		category: '',
+		noOfDays:0,
 		description: 'some desc',
 		duration: '',
 		difficulty: '',
@@ -34,6 +35,7 @@ const CreateWorkout = () => {
 		duration,
 		difficulty,
 		tags,
+		noOfDays,
 		imageLink,
 		equipments,
 		workoutSchedule,
@@ -52,6 +54,7 @@ const CreateWorkout = () => {
 		  duration,
 		  difficulty,
 		  tags,
+		  noOfDays,
 		  imageLink,
 		  equipments,
 		  workoutSchedule,
@@ -92,6 +95,16 @@ const CreateWorkout = () => {
 					placeholder='Workout category'
 					name='category'
                     value={category}
+                    onChange={(e)=>{onChange(e.target.name,e.target.value)}}
+					className="form-input mb-4"
+					required
+            	/>
+
+				<input
+					type='number'
+					placeholder='Number Of Days'
+					name='noOfDays'
+                    value={noOfDays}
                     onChange={(e)=>{onChange(e.target.name,e.target.value)}}
 					className="form-input mb-4"
 					required
