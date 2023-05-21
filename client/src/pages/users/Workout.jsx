@@ -118,7 +118,7 @@ function Workout() {
 	 <div className='row gx-5 mx-1 bg-white p-4 rounded shadow-md mt-4'>
 		  <div className='col-md-12 workout-d mb-4 p-4'>
 		  <div className=''>
-		  <img src={imageLink} alt="picture" className="rounded h-80" />
+		  <img src={imageLink} alt="picture" className="rounded h-96" />
 
 		  <h2 className='mb-4 text-3xl font-semibold mt-6'>{workoutName}</h2>
 		
@@ -200,7 +200,7 @@ function Workout() {
 		) : (
 		  <center>
 			<Link to='/user/register' className='secondary'>
-			  Create Account To Apply
+			  Create Account To Join
 			</Link>
 		  </center>
 		)}
@@ -213,7 +213,7 @@ function Workout() {
   
   <Modal show={showConfirmationModal} onHide={handleCloseConfirmationModal}>
 		  <Modal.Header closeButton>
-			<Modal.Title>Application to {workoutName} successful</Modal.Title>
+			<Modal.Title>You have successfully joined {workoutName}</Modal.Title>
 		  </Modal.Header>
 		  <Modal.Body>You can track the workout and other users in your dashboard
 		  <Link to='/user/dashboard' >
@@ -243,44 +243,40 @@ function Workout() {
 		</div>
 		<div className="bg-white p-4 rounded shadow-md mt-4">
       <h3 className="text-xl font-bold mb-4">Users Following this workout</h3>
-      <hr />
-      {userComments?.length === 0 ? (
-        <p className="text-gray-500">No users joined yet. Be the first to join!</p>
-      ) : (
-        userComments?.map((comment) => (
-          <div key={comment._id}>
-            <div className="mt-3 mb-3">
-              <p>
-                <span className="font-medium">Name: </span>
-                {comment.firstname}
-              </p>
-              <p>
-                <span className="font-medium">Email: </span>
-                {comment.email}
-              </p>
-              <p>
-                <span className="font-medium">Joined: </span>
-                {comment.comments}
-              </p>
-              <p>
-                <span className="font-medium">Progress: </span>
-                {comment.progress}%
-              </p>
-              <p>
-                <span className="font-medium">Joined: </span>
-                {moment(comment.appliedAt).fromNow()}
-              </p>
-              <button
-                className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded mt-3"
-                onClick={() => (window.location.href = `mailto:${comment.email}`)}
-              >
-                Message
-              </button>
-            </div>
-            <hr />
-          </div>
-        ))
-      )}
+     
+	  <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+  {userComments?.length === 0 ? (
+    <p className="text-gray-500">No users joined yet. Be the first to join!</p>
+  ) : (
+    userComments?.map((comment) => (
+      <div key={comment._id} className="bg-white p-4 shadow-md rounded">
+        <p>
+          <span className="font-medium">Name: </span>
+          {comment.firstname}
+        </p>
+        {/* <p>
+          <span className="font-medium">Email: </span>
+          {comment.email}
+        </p> */}
+        <p>
+          <span className="font-medium">Progress: </span>
+          {comment.progress}%
+        </p>
+        <p>
+          <span className="font-medium">Joined: </span>
+          {moment(comment.appliedAt).fromNow()}
+        </p>
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded mt-3"
+          onClick={() => (window.location.href = `mailto:${comment.email}`)}
+        >
+          Get In Touch
+        </button>
+      </div>
+    ))
+  )}
+</div>
+
     </div>
 	</div>
 	

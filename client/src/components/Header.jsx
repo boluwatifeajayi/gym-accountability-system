@@ -64,7 +64,7 @@ function Header() {
                 <Link to="/workouts" className='text-gray-900'>Workouts</Link>
               </li>
               <li className="inline-block mx-4">
-                <Link to="/internships/categories" className='text-gray-900'>How It Works</Link>
+                <Link to="/instructor/login" className='text-gray-900'>Intructor</Link>
               </li>
               <li className="inline-block mx-4">
                 <Link to="/internships/locations" className='text-gray-900'>Categories</Link>

@@ -1,9 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 
-/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Roboto:wght@400&display=swap'); */
+
+
 
 body{
   color: #444;
@@ -14,7 +17,7 @@ html{
 }
 
 h1, h2, h3, h4, h5, h5, h6{
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 .App {
@@ -307,7 +310,7 @@ button:hover {
   background-color: transparent;
 }
 h1, h2, h3, h4, h5, h5, h6{
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 .gray{

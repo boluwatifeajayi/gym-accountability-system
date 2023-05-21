@@ -23,12 +23,10 @@ const Home = () => {
           <h2>Achive Your Fitness Goal</h2>
           <h3>With Accountability Pro</h3>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Ut enim ad minim veniam,quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-            commodo consequat.
+          Welcome to Accountability Pro, your ultimate fitness companion. We are here to help you reach your fitness goals and stay accountable along the way. Whether you're a beginner or an experienced fitness enthusiast, our platform offers a wide range of workouts and resources to suit your needs.
           </p>
          
-			<Link to="/user/login">
+			<Link to="/workouts">
 				Get Started
 			</Link>
 		 

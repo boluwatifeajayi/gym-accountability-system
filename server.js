@@ -40,6 +40,7 @@ app.use(express.urlencoded({extended: false}))
 app.use('/api/users', require('./routes/userRoute'))
 app.use('/api/instructor', require('./routes/instructorRoute'))
 app.use('/api/workouts', require('./routes/workoutRoute'))
+app.use('/api/diets', require('./routes/dietRoute'))
 
 
 

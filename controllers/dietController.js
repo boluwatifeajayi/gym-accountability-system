@@ -1,9 +1,9 @@
-const workoutModel = require("../models/Workout");
+const dietModel = require("../models/Diet");
 const instructorModel = require("../models/Instructor");
 const userModel = require("../models/User");
 
 
-const createWorkout = async (req, res) => {
+const createDiet = async (req, res) => {
   try {
     const { instructorId } = res.locals.decoded;
     if (!instructorId) {
@@ -15,54 +15,54 @@ const createWorkout = async (req, res) => {
     const currentInstructor = await instructorModel.findById(instructorId);
     const { _id: insId, instructorFirstname, instructorLastname, instructorEmail, instructorBio } = currentInstructor
     
-    const newWorkout = await workoutModel.create({
+    const newDiet = await dietModel.create({
 		...req.body,
       theInstructor: {
 		insId, instructorFirstname, instructorLastname, instructorEmail, instructorBio
       },
     });
 
-    return res.status(201).json(newWorkout);
+    return res.status(201).json(newDiet);
   } catch (error) {
     console.error(error);
     if (error.code === 11000) {
-      return res.status(400).json({ error: "Workout already exists" });
+      return res.status(400).json({ error: "Diet already exists" });
     }
     return res.status(400).json({ error: error.message });
   }
 };
 
 
-const getAllWorkouts = async (req, res) => {
+const getAllDiets = async (req, res) => {
   try {
-    const allWorkouts = await workoutModel.find().sort({ updatedAt: -1 });
-    res.status(200).json(allWorkouts);
+    const allDiets = await dietModel.find().sort({ updatedAt: -1 });
+    res.status(200).json(allDiets);
   } catch (error) {
-    res.status(404).json({ error: "No workouts available" });
+    res.status(404).json({ error: "No diets available" });
   }
 };
 
-const getWorkoutsBySearch = async (req, res) => {
+const getDietsBySearch = async (req, res) => {
   try {
     const { search } = req.params; // Retrieve the search query from req.params
   
-    let searchedWorkouts;
-    searchedWorkouts = await workoutModel
+    let searchedDiets;
+    searchedDiets = await dietModel
       .find({
         $or: [
-          { workoutName: { $regex: search, $options: "i" } },
+          { dietName: { $regex: search, $options: "i" } },
           { category: { $regex: search, $options: "i" } },
           { tags: { $regex: search, $options: "i" } },
         ],
       })
       .sort({ updatedAt: -1 });
 
-    if (searchedWorkouts.length === 0) {
-      // Handle case when no workouts are found
-      return res.status(404).json({ error: "No workouts available" });
+    if (searchedDiets.length === 0) {
+      // Handle case when no diets are found
+      return res.status(404).json({ error: "No diets available" });
     }
 
-    res.status(200).json(searchedWorkouts);
+    res.status(200).json(searchedDiets);
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
   }
@@ -70,7 +70,7 @@ const getWorkoutsBySearch = async (req, res) => {
 
 
 
-const getInstructorWorkouts = async (req, res) => {
+const getInstructorDiets = async (req, res) => {
   try {
     const { instructorId } = res.locals.decoded;
     if (instructorId == null)
@@ -78,10 +78,10 @@ const getInstructorWorkouts = async (req, res) => {
         error: "Ensure you are a registered instructor to access this route",
       });
     const currentInstructor = await instructorModel.findById(instructorId);
-    const workoutsForInstructor = await workoutModel
+    const dietsForInstructor = await dietModel
       .find({ "theInstructor.insId": instructorId })
       .sort({ updatedAt: -1 });
-    res.status(200).json(workoutsForInstructor);
+    res.status(200).json(dietsForInstructor);
   } catch (error) {
     res.status(404).json({ error: error.message });
   }
@@ -90,37 +90,37 @@ const getInstructorWorkouts = async (req, res) => {
 
 
 
-const getWorkoutById = async (req, res) => {
+const getDietById = async (req, res) => {
   try {
-    const { workoutId } = req.params;
-    const currentWorkout = await workoutModel.findById(workoutId);
-    res.status(200).json(currentWorkout);
+    const { dietId } = req.params;
+    const currentDiet = await dietModel.findById(dietId);
+    res.status(200).json(currentDiet);
   } catch (error) {
     res.status(404).json({ error: error.message });
   }
 };
 
-const getCategoryWorkouts = async (req, res) => {
+const getCategoryDiets = async (req, res) => {
   try {
     const { category } = req.params;
-    const currentWorkout = await workoutModel
+    const currentDiet = await dietModel
       .find({ category } )
       .sort({ updatedAt: -1 });
-    res.status(200).json(currentWorkout);
+    res.status(200).json(currentDiet);
   } catch (error) {
     res.status(404).json({ error: error.message });
   }
 };
 
-const getUserAppliedWorkouts = async (req, res) => {
+const getUserAppliedDiets = async (req, res) => {
   try {
     const { userId } = res.locals.decoded;
     if (userId == null)
       return res.status(400).json({
         error: "Ensure you are a registered user to access this route",
       });
-    const appliedWorkouts = await workoutModel.find({ "theUsers.userId": userId });
-    res.status(200).json(appliedWorkouts);
+    const appliedDiets = await dietModel.find({ "theUsers.userId": userId });
+    res.status(200).json(appliedDiets);
   } catch (error) {
     res.status(404).json({ error: error.message });
   }
@@ -128,7 +128,7 @@ const getUserAppliedWorkouts = async (req, res) => {
 
 
 
-const applyToWorkout = async (req, res) => {
+const applyToDiet = async (req, res) => {
   try {
     const { userId } = res.locals.decoded;
     if (userId == null)
@@ -136,11 +136,11 @@ const applyToWorkout = async (req, res) => {
         .status(400)
         .json({ error: "Ensure you are a user to access this route" });
     const { joining, score } = req.body;
-    const { workoutid } = req.params;
+    const { dietid } = req.params;
     const appliedAt = Date.now();
     const getUser = await userModel.findById(userId);
-    const newWorkoutApplication = await workoutModel.findByIdAndUpdate(
-      workoutid,
+    const newDietApplication = await dietModel.findByIdAndUpdate(
+      dietid,
       {
         $push: {
           theUsers: {  userId, joining, score, appliedAt},
@@ -149,7 +149,7 @@ const applyToWorkout = async (req, res) => {
       { new: true }
     );
 
-    res.status(201).json(newWorkoutApplication);
+    res.status(201).json(newDietApplication);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -157,7 +157,7 @@ const applyToWorkout = async (req, res) => {
 
 
 
-const commentToWorkout = async (req, res) => {
+const commentToDiet = async (req, res) => {
   try {
     const { userId } = res.locals.decoded;
     if (userId == null)
@@ -165,7 +165,7 @@ const commentToWorkout = async (req, res) => {
         .status(400)
         .json({ error: "Ensure you are a user to access this route" });
     const { comments } = req.body;
-    const { workoutid } = req.params;
+    const { dietid } = req.params;
     const appliedAt = Date.now();
     const getUser = await userModel.findById(userId);
     const {
@@ -176,22 +176,22 @@ const commentToWorkout = async (req, res) => {
       email,
     } = getUser;
 
-    const workout = await workoutModel.findById(workoutid);
+    const diet = await dietModel.findById(dietid);
 
-    // Check if the user has already commented on this workout
-    const existingComment = workout.userComments.find(
+    // Check if the user has already commented on this diet
+    const existingComment = diet.userComments.find(
       (comment) => comment.userId.toString() === userId.toString()
     );
 
     if (existingComment) {
       return res
         .status(400)
-        .json({ error: "You have already commented on this workout" });
+        .json({ error: "You have already commented on this diet" });
     }
 
     const updateProgress = () => {
-      const daysElapsed = (new Date() - workout.createdAt) / (1000 * 60 * 60 * 24);
-      const progress = Math.min((daysElapsed / workout.noOfDays) * 100, 100);
+      const daysElapsed = (new Date() - diet.createdAt) / (1000 * 60 * 60 * 24);
+      const progress = Math.min((daysElapsed / diet.noOfDays) * 100, 100);
       const updatedComment = {
         userId,
         firstname,
@@ -204,7 +204,7 @@ const commentToWorkout = async (req, res) => {
         progress: progress.toFixed(2),
         appliedAt,
       };
-      workoutModel.findByIdAndUpdate(workoutid, {
+      dietModel.findByIdAndUpdate(dietid, {
         $push: { userComments: updatedComment },
       }).catch((error) => {
         console.log("Failed to update progress:", error);
@@ -217,54 +217,54 @@ const commentToWorkout = async (req, res) => {
     // Immediately update progress
     updateProgress();
 
-    const newWorkoutComment = await workoutModel.findById(workoutid);
+    const newDietComment = await dietModel.findById(dietid);
 
-    res.status(201).json(newWorkoutComment);
+    res.status(201).json(newDietComment);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
 
 
-const deleteWorkout = async (req, res) => {
+const deleteDiet = async (req, res) => {
   try {
-    const { workoutId } = req.params;
-    const workoutToDelete = await workoutModel.findById(workoutId);
-    if (!workoutToDelete) {
-      return res.status(404).json({ error: "Workout not found" });
+    const { dietId } = req.params;
+    const dietToDelete = await dietModel.findById(dietId);
+    if (!dietToDelete) {
+      return res.status(404).json({ error: "Diet not found" });
     }
-    await workoutModel.deleteOne({ _id: workoutId });
-    res.status(200).json({ message: "Workout deleted successfully" });
+    await dietModel.deleteOne({ _id: dietId });
+    res.status(200).json({ message: "Diet deleted successfully" });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
 
-const updateWorkout = async (req, res) => {
+const updateDiet = async (req, res) => {
   try {
-    const { workoutId } = req.params;
-    const workoutToUpdate = await workoutModel.findById(workoutId);
-    if (!workoutToUpdate) {
-      return res.status(404).json({ error: "Workout not found" });
+    const { dietId } = req.params;
+    const dietToUpdate = await dietModel.findById(dietId);
+    if (!dietToUpdate) {
+      return res.status(404).json({ error: "Diet not found" });
     }
-    const updatedWorkout = await workoutModel.findByIdAndUpdate(
-      workoutId,
+    const updatedDiet = await dietModel.findByIdAndUpdate(
+      dietId,
       { $set: req.body },
       { new: true }
     );
-    res.status(200).json(updatedWorkout);
+    res.status(200).json(updatedDiet);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
 
 
-const getWorkoutUsers = async (req, res) => {
+const getDietUsers = async (req, res) => {
   try {
-    const { workoutId } = req.params;
-    const currentWorkout = await workoutModel.findById(workoutId);
-    const usersForWorkout = currentWorkout.theUsers;
-    res.status(200).json(usersForWorkout);
+    const { dietId } = req.params;
+    const currentDiet = await dietModel.findById(dietId);
+    const usersForDiet = currentDiet.theUsers;
+    res.status(200).json(usersForDiet);
   } catch (error) {
     res.status(404).json({ error: error.message });
   }
@@ -273,17 +273,17 @@ const getWorkoutUsers = async (req, res) => {
 
 const getCommentUsers = async (req, res) => {
   try {
-    const { workoutId } = req.params;
-    const currentWorkout = await workoutModel.findById(workoutId);
-    const commentsForWorkout = currentWorkout.userComments;
-    res.status(200).json(commentsForWorkout);
+    const { dietId } = req.params;
+    const currentDiet = await dietModel.findById(dietId);
+    const commentsForDiet = currentDiet.userComments;
+    res.status(200).json(commentsForDiet);
   } catch (error) {
     res.status(404).json({ error: error.message });
   }
 };
 
 
-const getUserCommentedWorkouts = async (req, res) => {
+const getUserCommentedDiets = async (req, res) => {
   try {
     const { userId } = res.locals.decoded;
     if (userId == null)
@@ -291,8 +291,8 @@ const getUserCommentedWorkouts = async (req, res) => {
         error: "Ensure you are a registered user to access this route",
       });
 
-    const commentedWorkouts = await workoutModel.find({ "userComments.userId": userId });
-    res.status(200).json(commentedWorkouts);
+    const commentedDiets = await dietModel.find({ "userComments.userId": userId });
+    res.status(200).json(commentedDiets);
   } catch (error) {
     res.status(404).json({ error: error.message });
   }
@@ -301,19 +301,19 @@ const getUserCommentedWorkouts = async (req, res) => {
 
 
 module.exports = {
-  createWorkout,
-  getAllWorkouts,
-  getWorkoutsBySearch,
-  getInstructorWorkouts,
-  getWorkoutById,
-  getCategoryWorkouts,
-  getUserAppliedWorkouts,
-  applyToWorkout,
-  commentToWorkout,
-  deleteWorkout,
-  updateWorkout,
-  getWorkoutUsers,
+  createDiet,
+  getAllDiets,
+  getDietsBySearch,
+  getInstructorDiets,
+  getDietById,
+  getCategoryDiets,
+  getUserAppliedDiets,
+  applyToDiet,
+  commentToDiet,
+  deleteDiet,
+  updateDiet,
+  getDietUsers,
   getCommentUsers,
-  getUserCommentedWorkouts, 
+  getUserCommentedDiets, 
 
 };

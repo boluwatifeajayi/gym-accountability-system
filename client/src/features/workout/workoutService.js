@@ -27,7 +27,7 @@ const createWorkout = async (workoutData, token) => {
 
 // get workouts by search
 const getWorkoutsBySearch = async (search) => {
-  const response = await axios.get(`/api/workouts/search/${search}`)
+  const response = await axios.get(`${API_URL}search/${search}`)
   return response.data
 }
 
