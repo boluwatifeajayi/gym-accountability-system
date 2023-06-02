@@ -52,19 +52,19 @@ const Home = () => {
       <div className={`menu ${isActive ? 'active' : ''}`}>
         <ul>
           <li>
-            <a href="#">Home</a>
+            <Link to="/">Home</Link>
           </li>
           <li>
-            <a href="#">News</a>
+            <Link to="/workouts">Workouts</Link>
           </li>
           <li>
-            <a href="#">Destination</a>
+            <Link to="/diets">Diets</Link>
           </li>
           <li>
-            <a href="#">Blog</a>
+            <Link to="/instructors">Session</Link>
           </li>
           <li>
-            <a href="#">Contact</a>
+            <Link to="/instructor/login">Instructors</Link>
           </li>
         </ul>
       </div>

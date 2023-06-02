@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAllWorkouts, getWorkoutsBySearch, reset } from '../../features/workout/workoutSlice';
+import { getAllDiets, getDietsBySearch, reset } from '../../features/diet/dietSlice';
 import Header from '../../components/Header';
 
-function AllWorkouts() {
+function AllDiets() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [search, setSearch] = useState('');
 
-  const { workouts, isLoading, isError, isSuccess, workoutMessage } = useSelector((state) => state.workout);
+  const { diets, isLoading, isError, isSuccess, dietMessage } = useSelector((state) => state.diet);
 
   useEffect(() => {
     if (isError) {
-      console.log(workoutMessage);
+      console.log(dietMessage);
     }
 
-    dispatch(getAllWorkouts());
+    dispatch(getAllDiets());
 
     return () => {
       dispatch(reset());
@@ -26,12 +26,12 @@ function AllWorkouts() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    dispatch(getWorkoutsBySearch(search));
+    dispatch(getDietsBySearch(search));
   };
 
   const handleClearSearch = () => {
     setSearch('');
-    dispatch(getAllWorkouts());
+    dispatch(getAllDiets());
   };
 
   if (isLoading) {
@@ -46,12 +46,12 @@ function AllWorkouts() {
     <div>
       <Header />
       <div className="container mx-auto px-40 mt-8 mb-16">
-        <h1 className="text-3xl font-semibold container mb-6">All Workouts</h1>
+        <h1 className="text-3xl font-semibold container mb-6">All Diets</h1>
         <form onSubmit={handleSearch}>
           <div className="flex items-center">
             <input
               type="text"
-              placeholder="Search Workouts, categories, etc...."
+              placeholder="Search Diets, categories, etc...."
               className="w-full px-4 py-2 text-gray-700 bg-white border rounded-md focus:outline-none focus:border-red-500"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -68,25 +68,22 @@ function AllWorkouts() {
           </div>
         </form>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {workouts.length > 0 ? (
-            workouts.map((workout, index) => (
+          {diets.length > 0 ? (
+            diets.map((diet, index) => (
               <div key={index} className="bg-white p-4 rounded shadow-md mt-4">
                 <div className="relative w-full h-32">
-                  <img src={workout.imageLink} alt={workout.workoutName} className="absolute top-0 left-0 w-full h-full object-cover rounded" />
+                  <img src={diet.imageLink} alt={diet.dietName} className="absolute top-0 left-0 w-full h-full object-cover rounded" />
                 </div>
-                <h2 className="text-xl font-semibold mb-2">{workout.workoutName}</h2>
-                <p className="text-gray-500 mb-2 font-semibold">{workout.category}</p>
-                <div className="flex justify-between items-center mb-4">
-                  <p className="text-gray-500">{workout.noOfDays} Days</p>
-                  <p className="text-gray-500">{workout.difficulty}</p>
-                </div>
-                <Link to={`/workout/${workout._id}`}>
+                <h2 className="text-xl font-semibold mb-2">{diet.dietName}</h2>
+                <p className="text-gray-500 mb-2 font-semibold">{diet.category}</p>
+               
+                <Link to={`/diet/${diet._id}`}>
                   <button className="px-3 py-1 text-white bg-red-500 rounded">Learn More</button>
                 </Link>
               </div>
             ))
           ) : (
-            <p className='text-center'>You haven't Posted Any Workouts...Click Create New Workout To Get Started </p>
+            <p className='text-center'>You haven't Posted Any Diets...Click Create New Diet To Get Started </p>
           )}
         </div>
       </div>
@@ -94,4 +91,4 @@ function AllWorkouts() {
   );
 }
 
-export default AllWorkouts;
+export default AllDiets;

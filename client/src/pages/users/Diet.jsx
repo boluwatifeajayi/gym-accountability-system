@@ -1,9 +1,9 @@
 import {React, useEffect, useState} from 'react'
 import { useNavigate, useParams, Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import {getWorkoutById, reset} from '../../features/workout/workoutSlice'
-import {applyWorkout} from '../../features/workout/workoutSlice'
-import { commentToWorkout } from '../../features/workout/workoutSlice'
+import {getDietById, reset} from '../../features/diet/dietSlice'
+import {applyDiet} from '../../features/diet/dietSlice'
+import { commentToDiet } from '../../features/diet/dietSlice'
 import { Button, Modal, Form } from 'react-bootstrap';
 import { Helmet } from 'react-helmet';
 import moment from 'moment';
@@ -11,7 +11,7 @@ import Header from '../../components/Header'
 
 
 
-function Workout() {
+function Diet() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { id } = useParams();
@@ -29,9 +29,9 @@ function Workout() {
 
   const {comments} = formData
 
-  const {singleWorkout, isLoading, isError, isSuccess, workoutMessage} = useSelector((state) => state.workout)
+  const {singleDiet, isLoading, isError, isSuccess, dietMessage} = useSelector((state) => state.diet)
 
-  const { workoutName, category, description, duration, difficulty, tags, imageLink, noOfDays, equipments, workoutSchedule, userComments, createdAt } = singleWorkout
+  const { dietName, category, description, duration, difficulty, tags, imageLink, noOfDays, equipments, dietSchedule, userComments, createdAt } = singleDiet
 
 
   
@@ -60,13 +60,13 @@ function Workout() {
 	  comments: 'yeahh',
 	};
   
-	dispatch(commentToWorkout({ workoutId: id, commentData }))
+	dispatch(commentToDiet({ dietId: id, commentData }))
 	  .then(() => {
 		setShowModal(false);
 		setShowConfirmationModal(true);
 	  })
 	  .catch((error) => {
-		alert('You have already joined this workout');
+		alert('You have already joined this diet');
 		console.log(error);
 	  });
   };
@@ -75,19 +75,19 @@ function Workout() {
   
   useEffect(() => {
 	console.log(user);
-	dispatch(getWorkoutById(id));
+	dispatch(getDietById(id));
   
 	return () => {
 	  dispatch(reset());
 	};
-  }, [dispatch, getWorkoutById, id, user]);
+  }, [dispatch, getDietById, id, user]);
   
   useEffect(() => {
 	if (isError) {
-	  alert('You have already joined this workout');
-	  console.log(workoutMessage);
+	  alert('You have already joined this diet');
+	  console.log(dietMessage);
 	}
-  }, [isError, workoutMessage]);
+  }, [isError, dietMessage]);
 
 
   const timeDiff = moment(createdAt).fromNow();
@@ -108,19 +108,19 @@ function Workout() {
   return (
 	<div className='darr'>
 		<Header/>
-		<div className='container mlx-auto px-40 mt-8 mb-16'>
+		<div className='container mx-auto px-40 mt-8 mb-16'>
       
 
-	  <Link to="/workouts">
-		<button className='btn mt-4 mb-4 back-btn' style={{backgroundColor: '#d9dce2'}}> <i className='fa fa-arrow-left'></i>{" "}Back To Workouts</button>
+	  <Link to="/diets">
+		<button className='btn mt-4 mb-4 back-btn' style={{backgroundColor: '#d9dce2'}}> <i className='fa fa-arrow-left'></i>{" "}Back To Diets</button>
 		</Link>
 			
 	 <div className='row gx-5 mx-1 bg-white p-4 rounded shadow-md mt-4'>
-		  <div className='col-md-12 workout-d mb-4 p-4'>
+		  <div className='col-md-12 diet-d mb-4 p-4'>
 		  <div className=''>
 		  <img src={imageLink} alt="picture" className="rounded h-96" />
 
-		  <h2 className='mb-4 text-3xl font-semibold mt-6'>{workoutName}</h2>
+		  <h2 className='mb-4 text-3xl font-semibold mt-6'>{dietName}</h2>
 		
 			  <p className='mb-3 mt-3 font-semi
 			  '>{category}</p>
@@ -151,7 +151,7 @@ function Workout() {
 			 
 			  <div class="mt-3 mb-3">
 				
-				<div class="mb-3" dangerouslySetInnerHTML={{ __html: workoutSchedule }} />
+				<div class="mb-3" dangerouslySetInnerHTML={{ __html: dietSchedule }} />
   
 			   
 			</div>
@@ -169,7 +169,7 @@ function Workout() {
   
 		  <Modal show={showModal} onHide={handleCloseModal} dialogClassName="custom-modal" className='themod'>
 	<Modal.Header closeButton>
-	  <h3 className='text-2xl mb-4'>{workoutName}</h3>
+	  <h3 className='text-2xl mb-4'>{dietName}</h3>
 	  
 	</Modal.Header>
 	<Modal.Body>
@@ -213,9 +213,9 @@ function Workout() {
   
   <Modal show={showConfirmationModal} onHide={handleCloseConfirmationModal}>
 		  <Modal.Header closeButton>
-			<Modal.Title>You have successfully joined {workoutName}</Modal.Title>
+			<Modal.Title>You have successfully joined {dietName}</Modal.Title>
 		  </Modal.Header>
-		  <Modal.Body>You can track the workout and other users in your dashboard
+		  <Modal.Body>You can track the diet and other users in your dashboard
 		  <Link to='/user/dashboard' >
 		  <button
   type="submit"
@@ -242,7 +242,7 @@ function Workout() {
   
 		</div>
 		<div className="bg-white p-4 rounded shadow-md mt-4">
-      <h3 className="text-xl font-bold mb-4">Other Users to get accountable witht</h3>
+      <h3 className="text-xl font-bold mb-4">Users Following this diet</h3>
      
 	  <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
   {userComments?.length === 0 ? (
@@ -254,10 +254,10 @@ function Workout() {
           <span className="font-medium">Name: </span>
           {comment.firstname}
         </p>
-        <p>
+        {/* <p>
           <span className="font-medium">Email: </span>
           {comment.email}
-        </p>
+        </p> */}
         <p>
           <span className="font-medium">Progress: </span>
           {comment.progress}%
@@ -285,4 +285,4 @@ function Workout() {
   )
 }
 
-export default Workout
+export default Diet

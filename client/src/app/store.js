@@ -2,7 +2,8 @@ import { configureStore } from '@reduxjs/toolkit';
 import userAuthReducer from '../features/userAuth/userAuthSlice';
 import instructorAuthReducer from '../features/instructor/instructorAuthSlice'
 import workoutReducer from '../features/workout/workoutSlice'
-import dietReducer from '../features/diet/dietSlice'
+import dietReducer from '../features/diet/dietSlice';
+import goalReducer from '../features/goal/goalSlice';
 
 
 
@@ -11,6 +12,7 @@ export const store = configureStore({
     userauth: userAuthReducer,
     instructorauth: instructorAuthReducer,
     workout: workoutReducer,
-    diet: dietReducer
+    diet: dietReducer,
+    goal: goalReducer
   },
 });

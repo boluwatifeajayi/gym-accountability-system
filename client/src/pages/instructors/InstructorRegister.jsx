@@ -146,7 +146,7 @@ const {
               id='instructorBio'
               name='instructorBio'
               value={instructorBio}
-              placeholder='Enter Bio'
+              placeholder='Enter Bio and available times for sessions'
               onChange={onChange}
             
             ></textarea>

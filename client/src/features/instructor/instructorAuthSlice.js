@@ -8,6 +8,8 @@ const instructor = JSON.parse(localStorage.getItem('instructor'))
 // initial states
 const initialState = {
 	instructor: instructor ? instructor: null, 
+	instructors: [],
+	singleInstructor: {},
 	isError: false,
 	isSuccess: false,
 	isLoading: false,
@@ -50,6 +52,26 @@ export const updateInstructor = createAsyncThunk('instructorauth/updateInstructo
 		return thunkAPI.rejectWithValue(message)
 	}
 })
+
+
+export const getInstructors = createAsyncThunk('instructorauth/getInstructors', async (_, thunkAPI) => {
+	try {
+	  return await instructorAuthService.getInstructors();
+	} catch (error) {
+	  const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+	  return thunkAPI.rejectWithValue(message);
+	}
+  });
+  
+  // Get instructor by ID
+  export const getInstructorById = createAsyncThunk('instructorauth/getInstructorById', async (instructorId, thunkAPI) => {
+	try {
+	  return await instructorAuthService.getInstructorById(instructorId);
+	} catch (error) {
+	  const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+	  return thunkAPI.rejectWithValue(message);
+	}
+  });
 
 // logout
 export const logoutInstructor =  createAsyncThunk('instructorauth/logout', async () => {
@@ -103,6 +125,38 @@ export const instructorAuthSlice = createSlice({
 				state.message = action.payload
 				state.instructor = null
 			})
+
+			// Get instructors actions
+			.addCase(getInstructors.pending, (state) => {
+				state.isLoading = true;
+			  })
+			  .addCase(getInstructors.fulfilled, (state, action) => {
+				state.isLoading = false;
+				state.isSuccess = true;
+				state.instructors = action.payload; // Update the instructors state with the fetched data
+			  })
+			  .addCase(getInstructors.rejected, (state, action) => {
+				state.isLoading = false;
+				state.isError = true;
+				state.message = action.payload;
+				state.instructors = []; // Clear the instructors state in case of failure
+			  })
+		  
+			  // Get instructor by ID actions
+			  .addCase(getInstructorById.pending, (state) => {
+				state.isLoading = true;
+			  })
+			  .addCase(getInstructorById.fulfilled, (state, action) => {
+				state.isLoading = false;
+				state.isSuccess = true;
+				state.singleInstructor = action.payload; // Update the singleInstructor state with the fetched data
+			  })
+			  .addCase(getInstructorById.rejected, (state, action) => {
+				state.isLoading = false;
+				state.isError = true;
+				state.message = action.payload;
+			  })
+		  
 
 			// update yser
 				.addCase(updateInstructor.pending, (state) => {

@@ -6,7 +6,7 @@ const {errorHandler} = require('./middlewares/errorMiddleware')
 const helmet = require("helmet");
 const cors = require('cors')
 // const path = require('path')
-const settings = "development"
+const settings = "production"
 const morgan = require('morgan')
 
 
@@ -41,25 +41,26 @@ app.use('/api/users', require('./routes/userRoute'))
 app.use('/api/instructor', require('./routes/instructorRoute'))
 app.use('/api/workouts', require('./routes/workoutRoute'))
 app.use('/api/diets', require('./routes/dietRoute'))
+app.use('/api/goals', require('./routes/goalRoute'))
 
 
 
 const dirname = path.resolve()
-// app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
 
-// app.use('/uploads', express.static(path.join(dirname, '/uploads')))
+app.use('/uploads', express.static(path.join(dirname, '/uploads')))
 
-// if (settings === 'production') {
-//   app.use(express.static(path.join(__dirname, '/frontend/build')))
+if (settings === 'production') {
+  app.use(express.static(path.join(__dirname, '/client/dist')))
 
-//   app.get('*', (req, res) =>
-//     res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
-//   )
-// } else {
+  app.get('*', (req, res) =>
+    res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'))
+  )
+  console.log('hello')
+} else {
   app.get('/', (req, res) => {
     res.send('API is running....')
-  })
-// }
+  }) }
 
 
 

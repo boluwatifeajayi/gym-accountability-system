@@ -182,24 +182,27 @@ export const commentToWorkout = createAsyncThunk(
 
   
   // Delete workout
-  export const deleteWorkout = createAsyncThunk(
+  // Delete workout
+
+
+export const deleteWorkout = createAsyncThunk(
 	'workouts/deleteWorkout',
 	async (workoutId, thunkAPI) => {
 	  try {
-		const token = thunkAPI.getState().instructorauth.instructor.token
-		const response = await deleteWorkout(workoutId, token)
-		return response
+    const token = thunkAPI.getState().instructorauth.instructor.token
+		return await workoutService.deleteWorkout(workoutId, token)
 	  } catch (error) {
-		const workoutMessage =
+		const docmessage =
 		  (error.response &&
 			error.response.data &&
-			error.response.data.workoutMessage) ||
-		  error.workoutMessage ||
+			error.response.data.docmessage) ||
+		  error.docmessage ||
 		  error.toString()
-		return thunkAPI.rejectWithValue(workoutMessage)
+		return thunkAPI.rejectWithValue(docmessage)
 	  }
 	}
   )
+
   
 
   export const updateWorkout = createAsyncThunk(
@@ -453,18 +456,15 @@ builder
         state.workoutMessage = action.payload
       })
 // Delete workout
-builder
+
 .addCase(deleteWorkout.pending, (state) => {
 state.isLoading = true
 })
 .addCase(deleteWorkout.fulfilled, (state, action) => {
 state.isLoading = false
-state.isError = false
 state.isSuccess = true
-state.workouts = state.workouts.filter(
-(workout) => workout._id !== action.payload._id
-)
 })
+
 .addCase(deleteWorkout.rejected, (state, action) => {
 state.isLoading = false
 state.isError = true

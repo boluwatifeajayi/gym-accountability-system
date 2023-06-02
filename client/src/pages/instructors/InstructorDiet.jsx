@@ -1,12 +1,12 @@
 import {React, useEffect, useState} from 'react'
 import { useNavigate, useParams, Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import {getWorkoutById, reset, deleteWorkout} from '../../features/workout/workoutSlice'
+import {getDietById, reset, deleteDiet} from '../../features/diet/dietSlice'
 
 import { Button, Modal, Form } from 'react-bootstrap';
 import Header from '../../components/Header';
 
-function InstructorWorkout() {
+function InstructorDiet() {
   
 	const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -18,40 +18,36 @@ function InstructorWorkout() {
     const handleCloseModal = () => setShowModal(false);
 
 
-	const {singleWorkout, isLoading, isError, isSuccess, workoutMessage} = useSelector((state) => state.workout)
+	const {singleDiet, isLoading, isError, isSuccess, dietMessage} = useSelector((state) => state.diet)
 
-	const { workoutName, category, description, duration, difficulty, tags, imageLink, equipments, workoutSchedule } = singleWorkout
-
-
-
-
+	const { dietName, category, description, duration, difficulty, tags, imageLink, equipments, dietSchedule } = singleDiet
  
   const handleDelete = async () => {
-    if (window.confirm('Are you sure you want to delete this workout?')) {
+    if (window.confirm('Are you sure you want to delete this diet?')) {
       try {
-        await dispatch(deleteWorkout(id));
+        await dispatch(deleteDiet(id));
         // Reload the page after successful deletion
-        alert("Workout Deleted")
-        navigate('/instructor/dashboard');
+        alert("Diet Deleted")
+        navigate('/employer/internships');
       } catch (error) {
-        console.error('Error deleting workout:', error);
+        console.error('Error deleting diet:', error);
         // Alert an error if there was an error
-        alert('Error deleting workout');
+        alert('Error deleting diet');
       }
     }
   };
   
 	useEffect(() => {
-    if (isError && workoutMessage) {
-      console.log(workoutMessage);
+    if (isError && dietMessage) {
+      console.log(dietMessage);
     } 
   
-    dispatch(getWorkoutById(id));
+    dispatch(getDietById(id));
     
     return () => {
       dispatch(reset());
     };
-  }, [dispatch, id, isError, workoutMessage]);
+  }, [dispatch, id, isError, dietMessage]);
 
   if(isLoading){
     return <h1 className='loading'>
@@ -66,13 +62,13 @@ function InstructorWorkout() {
 		<Header/>
 		<div className='container2'>
     <Link to="/instructor/dashboard">
-      <button className='btn btn-block  mt-4 mb-4 w-25' style={{backgroundColor: '#d9dce2'}}> <i className='fa fa-arrow-left'></i>{" "}Back To workouts</button>
+      <button className='btn btn-block  mt-4 mb-4 w-25' style={{backgroundColor: '#d9dce2'}}> <i className='fa fa-arrow-left'></i>{" "}Back To diets</button>
       </Link>
           
    <div className='row gx-5 mx-1'>
-        <div className='col-md-7 border-b workout-d mb-4'>
+        <div className='col-md-7 border-b diet-d mb-4'>
        
-        <h2 className='mt-4 text-2xl'>{workoutName}</h2>
+        <h2 className='mt-4 text-2xl'>{dietName}</h2>
             
              <b className='pinkish bigger'>Category</b>
             <p>{category}</p>
@@ -83,13 +79,13 @@ function InstructorWorkout() {
             
             <b className='pinkish bigger'>Difficulty</b>
             <div dangerouslySetInnerHTML={{ __html: difficulty?.slice(0, 200)  }} />
-			<b className='pinkish bigger'>Workout</b>
-            <div dangerouslySetInnerHTML={{ __html: workoutSchedule?.slice(0, 200)  }} />
+			<b className='pinkish bigger'>Diet</b>
+            <div dangerouslySetInnerHTML={{ __html: dietSchedule?.slice(0, 200)  }} />
 
 
            <div>
-       <Link to={`/workout/update/${id}`}> <button className='btn btn-secondary'>Update Workout</button></Link>    
-            <button className='btn btn-danger ml-2' onClick={handleDelete}>Delete Workout</button>
+       <Link to={`/diet/update/${id}`}> <button className='btn btn-secondary'>Update Diet</button></Link>    
+            <button className='btn btn-danger ml-2' onClick={handleDelete}>Delete Diet</button>
             
             </div>
 
@@ -117,7 +113,7 @@ function InstructorWorkout() {
       <button
         className="btn btn-primary mt-4 mb-4 mr-3"
         onClick={() => {
-          dispatch(acceptStudent({ studentId: student.studentId, workoutId: id }));
+          dispatch(acceptStudent({ studentId: student.studentId, dietId: id }));
           setTimeout(() => {
             setShowModal(true);
             
@@ -152,7 +148,7 @@ function InstructorWorkout() {
       </Modal>
     
            
-            <button className="btn btn-danger mt-4 mb-4" onClick={() => dispatch(declineStudent({studentId: student.studentId, workoutId: id}))}>Decline</button>
+            <button className="btn btn-danger mt-4 mb-4" onClick={() => dispatch(declineStudent({studentId: student.studentId, dietId: id}))}>Decline</button>
             <hr/>
         </div>
       ))} 
@@ -167,4 +163,4 @@ function InstructorWorkout() {
   )
 }
 
-export default InstructorWorkout
+export default InstructorDiet

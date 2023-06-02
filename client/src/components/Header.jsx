@@ -46,10 +46,10 @@ function Header() {
 
   return (
     <div>
-  <header className="sticky top-0 z-50 bg-white shadow-md">
+  <header className="sticky top-0 z-50 bg-white shadow-md navbar-short">
     <div className="container mx-auto flex justify-between items-center py-0 px-6">
       <Link to="/">
-        <h5 className="text-blue-500 text-xl font-bold tracking-wide">
+        <h5 className="text-red-500 text-xl font-bold tracking-wide">
          Accountability
         </h5>
       </Link>
@@ -64,13 +64,13 @@ function Header() {
                 <Link to="/workouts" className='text-gray-900'>Workouts</Link>
               </li>
               <li className="inline-block mx-4">
-                <Link to="/instructor/login" className='text-gray-900'>Intructor</Link>
+                <Link to="/diets" className='text-gray-900'>Diets</Link>
               </li>
               <li className="inline-block mx-4">
-                <Link to="/internships/locations" className='text-gray-900'>Categories</Link>
+                <Link to="/instructors" className='text-gray-900'>Sessions</Link>
               </li>
               <li className="inline-block mx-4">
-                <Link to="/companies/all" className='text-gray-900'>Contact</Link>
+                <Link to="/instructor/register" className='text-gray-900'>Instructor</Link>
               </li>
             </span>
           )}
@@ -84,11 +84,11 @@ function Header() {
               className="mr-8 text-lg font-medium"
               to={instructor ? "/instructor/dashboard" : "/user/dashboard"}
             >
-              <i className="fas fa-user mr-2 text-blue-500"></i>
-              <span className='text-blue-500'>Dashboard</span>
+              <i className="fas fa-user mr-2 text-red-500"></i>
+              <span className='text-red-500'>Dashboard</span>
             </Link>
             <button
-              className="bg-transparent border border-white rounded-full px-6 py-2 text-blue-500 font-medium"
+              className="bg-transparent border border-white rounded-full px-6 py-2 text-red-500 font-medium"
               onClick={onLogout}
             >
               Logout
@@ -98,13 +98,13 @@ function Header() {
           <>
             <Link
               to="/user/login"
-              className="bg-white px-6 py-2 rounded-md text-blue-500 font-medium mr-4  transition duration-300 ease-in-out"
+              className="bg-white px-6 py-2 rounded-md text-red-500 font-medium mr-4  transition duration-300 ease-in-out"
             >
               Login
             </Link>
             <Link
               to="/user/register"
-              className="bg-blue-500 px-6 py-2 rounded-md text-white font-medium   transition duration-300 ease-in-out"
+              className="bg-red-500 px-6 py-2 rounded-md text-white font-medium   transition duration-300 ease-in-out"
             >
               Register
             </Link>

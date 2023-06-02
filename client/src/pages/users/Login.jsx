@@ -81,7 +81,7 @@ function Login() {
               name="email"
               onChange={onChange}
               value={email}
-              className="py-2 px-3 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-500"
+              className="py-2 px-3 rounded-lg border border-gray-300 focus:outline-none focus:border-red-500"
               placeholder="example@example.com"
               required
             />
@@ -98,13 +98,13 @@ function Login() {
               value={password}
               placeholder="••••••••"
               onChange={onChange}
-              className="py-2 px-3 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-500"
+              className="py-2 px-3 rounded-lg border border-gray-300 focus:outline-none focus:border-red-500"
               required
               minLength="6"
             />
           </div>
 
-          <button className="bg-blue-500 text-white py-2 px-4 rounded-lg font-medium tracking-wide shadow-lg hover:bg-blue-600 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed w-full">
+          <button className="bg-red-500 text-white py-2 px-4 rounded-lg font-medium tracking-wide shadow-lg hover:bg-red-600 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed w-full">
             {isLoading ? 'Loading...' : 'Login'}
           </button>
         </form>
@@ -113,7 +113,7 @@ function Login() {
           <span>Don't have an account?</span>
           <Link
             to="/user/register"
-            className="text-blue-500 font-medium hover:underline transition-colors duration-200"
+            className="text-red-500 font-medium hover:underline transition-colors duration-200"
           >
             Register
           </Link>

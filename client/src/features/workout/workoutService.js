@@ -110,7 +110,7 @@ const deleteWorkout = async (workoutId, token) => {
   }
 
   const response = await axios.delete(`${API_URL}delete/${workoutId}`, config)
-
+  console.log("deleted")
   return response.data
 }
 

@@ -20,8 +20,22 @@ h1, h2, h3, h4, h5, h5, h6{
   font-family: 'Roboto', sans-serif;
 }
 
+.container2 li{
+  color: #24262b;
+}
+
+.darr li{
+  color: #444;
+  list-style: disc;
+  list-style-type: disc;
+}
+
 .App {
   text-align: center;
+}
+
+li{
+  color: #24262b;
 }
 
 .App-logo {
@@ -112,6 +126,11 @@ a:hover{
   border: none;
   border-radius: 9px;
 }
+
+.navbar-short {
+  height: 50px; /* Adjust the height value as per your requirement */
+}
+
 
 .img-contain{
   width: 95%;
