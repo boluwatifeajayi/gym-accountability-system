@@ -2,7 +2,7 @@ import axios from 'axios';
 
 axios.defaults.withCredentials = true;
 
-const API_URL = "http://localhost:4070/api/goals/";
+const API_URL = "https://ms-project.onrender.com/api/goals/";
 
 // Create goal
 const createGoal = async (goalData, token) => {

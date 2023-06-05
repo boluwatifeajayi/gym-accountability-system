@@ -40,5 +40,5 @@
     "tailwindcss": "^3.3.1",
     "vite": "^4.2.0"
   },
-  "proxy": "http://localhost:4070"
+  "proxy": "https://ms-project.onrender.com"
 }

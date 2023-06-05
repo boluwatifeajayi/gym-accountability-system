@@ -2,7 +2,7 @@ import axios from 'axios'
 
 axios.defaults.withCredentials = true
 
-const API_URL = "http://localhost:4070/api/diets/"
+const API_URL = "https://ms-project.onrender.com/api/diets/"
 
 // get all diets
 const getAllDiets = async () => {

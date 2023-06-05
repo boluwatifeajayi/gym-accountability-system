@@ -2,7 +2,7 @@ import axios from 'axios'
 
 axios.defaults.withCredentials = true
 
-const API_URL = "http://localhost:4070/api/users/"
+const API_URL = "https://ms-project.onrender.com/api/users/"
 
 // register user
 const register = async(userData) => {
